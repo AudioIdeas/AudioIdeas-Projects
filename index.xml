@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Audioideas ReaScripts" commit="58a3e39ba95bd0f35846aa1f39aa4cb2574295e1">
+<index version="1" name="Audioideas ReaScripts" commit="a630b8ee3991ed92a153c74d7e9b2d896f2fe3b6">
   <category name="Example">
     <reapack name="cfillion_Hello world.lua" type="script" desc="Hello world">
       <metadata>
@@ -18,6 +18,22 @@ Markdown
       </metadata>
       <version name="1.0" author="cfillion" time="2021-01-04T23:30:32Z">
         <source main="main">https://github.com/cfillion/reapack-repository-template/raw/58a3e39ba95bd0f35846aa1f39aa4cb2574295e1/Example/cfillion_Hello%20world.lua</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Hardware_insert_scripts">
+    <reapack name="hardware-insert-via-preset.lua" type="script" desc="Add hardware insert via presets">
+      <version name="1.0" author="Vesa Laasanen" time="2023-09-24T11:16:38Z">
+        <changelog><![CDATA[1.0:
+initial version]]></changelog>
+        <source main="main">https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/5fddc2c338f25ef305abd876f2089ebcd66d5246/Hardware_insert_scripts/hardware-insert-via-preset.lua</source>
+      </version>
+    </reapack>
+    <reapack name="render_hardware_inserts.lua" type="script" desc="Render hardware inserts">
+      <version name="1.0" author="Vesa Laasanen" time="2023-09-24T11:16:38Z">
+        <changelog><![CDATA[1.0:
+initial version]]></changelog>
+        <source main="main">https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/5fddc2c338f25ef305abd876f2089ebcd66d5246/Hardware_insert_scripts/render_hardware_inserts.lua</source>
       </version>
     </reapack>
   </category>
