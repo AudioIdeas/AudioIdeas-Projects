@@ -1,9 +1,9 @@
-@description Add hardware insert via presets
-@version 1.0
-@author Vesa Laasanen
-@changelog
-  1.0:
-  initial version
+-- @description Add hardware insert via presets
+-- @version 1.0
+-- @author Vesa Laasanen
+-- @changelog
+--   1.0:
+--   initial version
 
 
 -- Declare parameters

@@ -1,9 +1,9 @@
-@description Render hardware inserts
-@version 1.0
-@author Vesa Laasanen
-@changelog
-  1.0:
-  initial version
+-- @description Render hardware inserts
+-- @version 1.0
+-- @author Vesa Laasanen
+-- @changelog
+--   1.0:
+--   initial version
 
 function storeRenderSpeed()
   reaper.Main_OnCommand(reaper.NamedCommandLookup("_XENAKIOS_STORERENDERSPEED"), 0)
