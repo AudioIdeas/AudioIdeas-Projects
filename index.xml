@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Audioideas ReaScripts" commit="ae43d7110a1bb2792f947ec7e205a89b67748fd6">
+<index version="1" name="Audioideas ReaScripts" commit="39cae908939534d23a7d2ed9f10f0e5bd062cde1">
   <category name="Hardware_insert_scripts">
     <reapack name="render_hardware_inserts.lua" type="script" desc="Render hardware inserts">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 #Render-hw-insert This script assists in the rendering process for tracks designated as hardware inserts with set-hw-insert.lua script.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Usage Instructions:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Ensure you've set up any tracks you wish to be recognized as hardware inserts with the "HW_INS-" name prefix.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Run the script. It will automatically find, select, and freeze tracks with the designated prefix and manage the render speed settings accordingly.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Dependencies:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The script relies on specific Xenakios/SWS actions for managing render speeds. Ensure you have the SWS extension installed and that these actions are accessible.\sa180\par}
+}
+]]></description>
+      </metadata>
       <version name="1.0" author="Vesa Laasanen" time="2023-09-24T11:16:38Z">
         <changelog><![CDATA[1.0:
 initial version]]></changelog>
@@ -17,14 +31,15 @@ initial version]]></changelog>
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Set-hw-insert\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This Reaper script facilitates the easy setup of hardware inserts using the ReaInsert VST plugin. To tailor this script for various presets, follow the steps below:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Basic Usage:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Create presets in ReaScript plugin for the insert you want to use\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Modify the Preset Name in the Script: Open the script in a text editor. Locate the line: local preset_name = "MyPreset". Replace "MyPreset" with the exact name of the preset you want the script to use. For instance: local preset_name = "YourDesiredPresetName"\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Select the track where you wish to apply the hardware insert.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Run the script.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If the selected track or its subsequent tracks are named HW_INS-(something), the script will replace the ReaInsert plugin on that track. Otherwise, it creates a new child track and configures the ReaInsert plugin with the specified preset on it.\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Customizing for Multiple Presets:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Duplicate the Script: Make a copy of the script for each preset you wish to recall.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Rename the Script: Give each duplicated script a meaningful name, indicating which preset it's associated with.\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Modify the Preset Name in the Script: Open the duplicated script in a text editor. Locate the line: local preset_name = "MyPreset". Replace "MyPreset" with the exact name of the preset you want the script to use. For instance: local preset_name = "YourDesiredPresetName".\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Save and Run: After modifying, save the script. Now, when you run this version of the script, it will specifically look for and apply YourDesiredPresetName.\sa180\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Modify the Preset Name in each script\sa180\par}
 }
 ]]></description>
       </metadata>
