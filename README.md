@@ -1,23 +1,18 @@
-# ReaPack Repository Template
+# AudioIdeas REAPER Scripts Repository
 
-A template for GitHub-hosted ReaPack repositories with automated
-[reapack-index](https://github.com/cfillion/reapack-index)
-running from GitHub Actions.
+Collection of Lua scripts for Cockos REAPER developed by Vesa Laasanen.
 
-Replace the name of the repository in [index.xml](/index.xml) when using this template.
-This will be the name shown in ReaPack.
+## Installation
+For easy installation and updates, integrate this repository with the ReaPack REAPER extension:
 
-```xml
-<index version="1" name="Name of your repository here">
-```
+1. Open REAPER and navigate to `Extensions` > `ReaPack` > `Import a repository`.
+2. Copy and paste the following URL: `https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/master/index.xml`
 
-Replace the contents of this file ([README.md](/README.md)).
-This will be the text shown when using ReaPack's "About this repository" feature.
+## Contributing
+Feedback and contributions are welcome. If you'd like to contribute or suggest changes, please make a pull request or open an issue.
 
-reapack-index looks for package files in subfolders.
-The folder tree represents the package categories shown in ReaPack.
+## Contact & More
+- **YouTube**: [Audio Ideas](https://www.youtube.com/@audioideas)
+- **Email**: [audioideasblog@gmail.com](mailto:audioideasblog@gmail.com)
 
-Each package file is expected to begin with a metadata header.
-See [Packaging Documentation](https://github.com/cfillion/reapack-index/wiki/Packaging-Documentation) on reapack-index's wiki.
-
-The URL to import in ReaPack is [https://github.com/`<your username>`/`<repository name>`/raw/master/index.xml](https://github.com/cfillion/reapack-repository-template/raw/master/index.xml).
+For discussions, suggestions, or any other queries, feel free to reach out.
