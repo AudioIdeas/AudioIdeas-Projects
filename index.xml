@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Audioideas ReaScripts" commit="39cae908939534d23a7d2ed9f10f0e5bd062cde1">
+<index version="1" name="Audioideas ReaScripts" commit="a77bc86c36ae3291d21f027b50b833f96d171ea8">
   <category name="Hardware_insert_scripts">
     <reapack name="render_hardware_inserts.lua" type="script" desc="Render hardware inserts">
       <metadata>
@@ -7,7 +7,8 @@
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \sa180 \li0 \fi0 #Render-hw-insert This script assists in the rendering process for tracks designated as hardware inserts with set-hw-insert.lua script.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Render-hw-insert\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This script assists in the rendering process for tracks designated as hardware inserts with set-hw-insert.lua script.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Usage Instructions:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Ensure you've set up any tracks you wish to be recognized as hardware inserts with the "HW_INS-" name prefix.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Run the script. It will automatically find, select, and freeze tracks with the designated prefix and manage the render speed settings accordingly.\sa180\par}
