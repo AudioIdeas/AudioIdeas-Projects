@@ -55,29 +55,24 @@ initial version]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 ReaPack Repository Template\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 A template for GitHub-hosted ReaPack repositories with automated {\field{\*\fldinst{HYPERLINK "https://github.com/cfillion/reapack-index"}}{\fldrslt{\ul
-reapack-index
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 AudioIdeas REAPER Scripts Repository\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Collection of Lua scripts for Cockos REAPER developed by Vesa Laasanen.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Installation\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For easy installation and updates, integrate this repository with the ReaPack REAPER extension:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 1.\tx360\tab Open REAPER and navigate to {\f1 Extensions} > {\f1 ReaPack} > {\f1 Import a repository}.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 2.\tx360\tab Copy and paste the following URL: {\f1 https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/master/index.xml}\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Contributing\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Feedback and contributions are welcome. If you'd like to contribute or suggest changes, please make a pull request or open an issue.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Contact & More\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b YouTube}: {\field{\*\fldinst{HYPERLINK "https://www.youtube.com/@audioideas"}}{\fldrslt{\ul
+Audio Ideas
 }}}
- running from GitHub Actions.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Replace the name of the repository in {\field{\*\fldinst{HYPERLINK "/index.xml"}}{\fldrslt{\ul
-index.xml
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Email}: {\field{\*\fldinst{HYPERLINK "mailto:audioideasblog@gmail.com"}}{\fldrslt{\ul
+audioideasblog@gmail.com
 }}}
- when using this template. This will be the name shown in ReaPack.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <index version="1" name="Name of your repository here">\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Replace the contents of this file ({\field{\*\fldinst{HYPERLINK "/README.md"}}{\fldrslt{\ul
-README.md
-}}}
-). This will be the text shown when using ReaPack's "About this repository" feature.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 reapack-index looks for package files in subfolders. The folder tree represents the package categories shown in ReaPack.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Each package file is expected to begin with a metadata header. See {\field{\*\fldinst{HYPERLINK "https://github.com/cfillion/reapack-index/wiki/Packaging-Documentation"}}{\fldrslt{\ul
-Packaging Documentation
-}}}
- on reapack-index's wiki.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The URL to import in ReaPack is {\field{\*\fldinst{HYPERLINK "https://github.com/cfillion/reapack-repository-template/raw/master/index.xml"}}{\fldrslt{\ul
-https://github.com/{\f1 <your username>}/{\f1 <repository name>}/raw/master/index.xml
-}}}
-.\par}
+\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For discussions, suggestions, or any other queries, feel free to reach out.\par}
 }
 ]]></description>
   </metadata>
