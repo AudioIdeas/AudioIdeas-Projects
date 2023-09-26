@@ -42,11 +42,6 @@ if not reaper.file_exists(targetDir) then
     -- If directory creation fails, show an error and exit
     if not success then
         local errorMessage = "Failed to create the subdirectory. Please create it manually.\n\nPath: " .. targetDir
-        if osType:find("Win") then
-            errorMessage = errorMessage .. "\n\nOn Windows: Use File Explorer"
-        else
-            errorMessage = errorMessage .. "\n\nOn macOS: Use Finder"
-        end
         reaper.MB(errorMessage, "Error", 0)
         return
     end
