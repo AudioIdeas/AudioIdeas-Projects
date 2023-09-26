@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Audioideas ReaScripts" commit="af87228f39310396be9d3ddb7f7a3677fbcb7a0a">
+<index version="1" name="Audioideas ReaScripts" commit="ae43d7110a1bb2792f947ec7e205a89b67748fd6">
   <category name="Hardware_insert_scripts">
     <reapack name="render_hardware_inserts.lua" type="script" desc="Render hardware inserts">
       <version name="1.0" author="Vesa Laasanen" time="2023-09-24T11:16:38Z">
@@ -19,7 +19,8 @@ initial version]]></changelog>
 {\pard \ql \f0 \sa180 \li0 \fi0 Basic Usage:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Select the track where you wish to apply the hardware insert.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Run the script.\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If the selected track or its subsequent tracks are named HW_INS-(something), the script will replace the ReaInsert plugin on that track. Otherwise, it creates a new child track and configures the ReaInsert plugin with the specified preset on it. Customizing for Multiple Presets:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If the selected track or its subsequent tracks are named HW_INS-(something), the script will replace the ReaInsert plugin on that track. Otherwise, it creates a new child track and configures the ReaInsert plugin with the specified preset on it.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Customizing for Multiple Presets:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Duplicate the Script: Make a copy of the script for each preset you wish to recall.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Rename the Script: Give each duplicated script a meaningful name, indicating which preset it's associated with.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Modify the Preset Name in the Script: Open the duplicated script in a text editor. Locate the line: local preset_name = "MyPreset". Replace "MyPreset" with the exact name of the preset you want the script to use. For instance: local preset_name = "YourDesiredPresetName".\par}
