@@ -6,7 +6,7 @@
    1.0:
    initial version
 @about
-   #Render-hw-insert
+   # Render-hw-insert
    This script assists in the rendering process for tracks designated as hardware inserts with set-hw-insert.lua script.
 
    Usage Instructions:
