@@ -1,9 +1,25 @@
--- @description Add hardware insert via presets
--- @version 1.0
--- @author Vesa Laasanen
--- @changelog
---   1.0:
---   initial version
+--[[
+@description Add hardware insert via presets
+@version 1.0
+@author Vesa Laasanen
+@changelog
+  1.0:
+  initial version
+@about
+ # Set-hw-insert
+ This Reaper script facilitates the easy setup of hardware inserts using the ReaInsert VST plugin. To tailor this script for various presets, follow the steps below:
+
+ Basic Usage:
+- Select the track where you wish to apply the hardware insert.
+- Run the script.
+- If the selected track or its subsequent tracks are named HW_INS-(something), the script will replace the ReaInsert plugin on that track. Otherwise, it creates a new child track and configures the ReaInsert plugin with the specified preset on it.
+ Customizing for Multiple Presets:
+- Duplicate the Script: Make a copy of the script for each preset you wish to recall.
+- Rename the Script: Give each duplicated script a meaningful name, indicating which preset it's associated with.
+- Modify the Preset Name in the Script: Open the duplicated script in a text editor. Locate the line: local preset_name = "MyPreset". Replace "MyPreset" with the exact name of the preset you want the script to use. For instance: local preset_name = "YourDesiredPresetName".
+- Save and Run: After modifying, save the script. Now, when you run this version of the script, it will specifically look for and apply YourDesiredPresetName.
+--]]
+
 
 
 -- Declare parameters
