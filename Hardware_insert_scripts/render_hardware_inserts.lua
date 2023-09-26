@@ -1,9 +1,22 @@
--- @description Render hardware inserts
--- @version 1.0
--- @author Vesa Laasanen
--- @changelog
---   1.0:
---   initial version
+--[[
+@description Render hardware inserts
+@version 1.0
+@author Vesa Laasanen
+@changelog
+   1.0:
+   initial version
+@about
+   #Render-hw-insert
+   This script assists in the rendering process for tracks designated as hardware inserts with set-hw-insert.lua script.
+
+   Usage Instructions:
+     - Ensure you've set up any tracks you wish to be recognized as hardware inserts with the "HW_INS-" name prefix.
+     - Run the script. It will automatically find, select, and freeze tracks with the designated prefix and manage the render speed settings accordingly.
+
+   Dependencies:
+     - The script relies on specific Xenakios/SWS actions for managing render speeds. Ensure you have the SWS extension installed and that these actions are accessible.
+--]]
+
 
 function storeRenderSpeed()
   reaper.Main_OnCommand(reaper.NamedCommandLookup("_XENAKIOS_STORERENDERSPEED"), 0)
