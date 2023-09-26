@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Audioideas ReaScripts" commit="934ef3a97a5be6000095a4a7d6bcc57cd0bbb819">
+<index version="1" name="Audioideas ReaScripts" commit="225571d225b6f210a0ac90232c17a477c1391138">
   <category name="Hardware_insert_scripts">
     <reapack name="render_hardware_inserts.lua" type="script" desc="Render hardware inserts">
       <version name="1.0" author="Vesa Laasanen" time="2023-09-24T11:16:38Z">
@@ -8,7 +8,7 @@ initial version]]></changelog>
         <source main="main">https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/5fddc2c338f25ef305abd876f2089ebcd66d5246/Hardware_insert_scripts/render_hardware_inserts.lua</source>
       </version>
     </reapack>
-    <reapack name="set-hw-insert.lua.lua" type="script" desc="Add hardware insert via presets">
+    <reapack name="set-hw-insert.lua" type="script" desc="Add hardware insert via presets">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
@@ -20,10 +20,10 @@ initial version]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0" author="Vesa Laasanen" time="2023-09-26T04:23:46Z">
+      <version name="1.0" author="Vesa Laasanen" time="2023-09-26T04:25:16Z">
         <changelog><![CDATA[1.0:
 initial version]]></changelog>
-        <source main="main">https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/934ef3a97a5be6000095a4a7d6bcc57cd0bbb819/Hardware_insert_scripts/set-hw-insert.lua.lua</source>
+        <source main="main">https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/225571d225b6f210a0ac90232c17a477c1391138/Hardware_insert_scripts/set-hw-insert.lua</source>
       </version>
     </reapack>
   </category>
