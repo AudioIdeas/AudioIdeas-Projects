@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Audioideas ReaScripts" commit="a77bc86c36ae3291d21f027b50b833f96d171ea8">
+<index version="1" name="Audioideas ReaScripts" commit="576b863723abf95431e3567f5f1619f2e9738092">
   <category name="Hardware_insert_scripts">
+    <reapack name="duplcate-hw-scripts.lua" type="script" desc="Generate hardware insert scripts from ReaInsert presets">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Generate-hw-insert-scripts\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This Reaper script automates the generation of individual hardware insert scripts using presets from the ReaInsert VST plugin. When executed, the script will:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 1.\tx360\tab Scan for available ReaInsert presets.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 2.\tx360\tab For each found preset, duplicate the {\f1 set-hw-insert.lua} script.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 3.\tx360\tab Rename the duplicated scripts according to the associated ReaInsert preset.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 4.\tx360\tab Modify the preset name inside each duplicated script accordingly.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Usage:}\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0" author="Vesa Laasanen" time="2023-09-26T18:35:06Z">
+        <changelog><![CDATA[1.0:
+Initial version]]></changelog>
+        <source main="main">https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/576b863723abf95431e3567f5f1619f2e9738092/Hardware_insert_scripts/duplcate-hw-scripts.lua</source>
+      </version>
+    </reapack>
     <reapack name="render_hardware_inserts.lua" type="script" desc="Render hardware inserts">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
