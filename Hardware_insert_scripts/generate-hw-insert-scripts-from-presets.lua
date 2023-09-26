@@ -6,7 +6,7 @@
   1.0:
   Initial version
 @about
- # Generate-hw-insert-scripts
+ # Generate-hw-insert-scripts-from-presets
  This Reaper script automates the generation of individual hardware insert scripts using presets from the ReaInsert VST plugin. When executed, the script will:
 
  1. Scan for available ReaInsert presets.
