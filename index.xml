@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Audioideas ReaScripts" commit="225571d225b6f210a0ac90232c17a477c1391138">
+<index version="1" name="Audioideas ReaScripts" commit="af87228f39310396be9d3ddb7f7a3677fbcb7a0a">
   <category name="Hardware_insert_scripts">
     <reapack name="render_hardware_inserts.lua" type="script" desc="Render hardware inserts">
       <version name="1.0" author="Vesa Laasanen" time="2023-09-24T11:16:38Z">
@@ -8,7 +8,7 @@ initial version]]></changelog>
         <source main="main">https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/5fddc2c338f25ef305abd876f2089ebcd66d5246/Hardware_insert_scripts/render_hardware_inserts.lua</source>
       </version>
     </reapack>
-    <reapack name="set-hw-insert.lua" type="script" desc="Add hardware insert via presets">
+    <reapack name="set-hw-insert.lua" type="script" desc="Set hardware insert">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
@@ -17,6 +17,13 @@ initial version]]></changelog>
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Set-hw-insert\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This Reaper script facilitates the easy setup of hardware inserts using the ReaInsert VST plugin. To tailor this script for various presets, follow the steps below:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Basic Usage:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Select the track where you wish to apply the hardware insert.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Run the script.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If the selected track or its subsequent tracks are named HW_INS-(something), the script will replace the ReaInsert plugin on that track. Otherwise, it creates a new child track and configures the ReaInsert plugin with the specified preset on it. Customizing for Multiple Presets:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Duplicate the Script: Make a copy of the script for each preset you wish to recall.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Rename the Script: Give each duplicated script a meaningful name, indicating which preset it's associated with.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Modify the Preset Name in the Script: Open the duplicated script in a text editor. Locate the line: local preset_name = "MyPreset". Replace "MyPreset" with the exact name of the preset you want the script to use. For instance: local preset_name = "YourDesiredPresetName".\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Save and Run: After modifying, save the script. Now, when you run this version of the script, it will specifically look for and apply YourDesiredPresetName.\sa180\par}
 }
 ]]></description>
       </metadata>
