@@ -6,7 +6,7 @@
   1.0:
   Initial version
 @about
- # Generate-hw-insert-scripts-from-presets
+ # Generate-hw-insert-scripts
  This Reaper script automates the generation of individual hardware insert scripts using presets from the ReaInsert VST plugin. When executed, the script will:
 
  1. Scan for available ReaInsert presets.
@@ -23,6 +23,10 @@
 - If you have custom paths or folder structures, ensure you adjust the script accordingly.
 - This script assumes that ReaInsert presets are saved in the standard location.
 --]]
+
+local function replacePresetName(script, newPresetName)
+    return script:gsub('(local preset_name = ")(.-)(")', '%1' .. newPresetName .. '%3')
+end
 
 -- Get Resource Path and OS-specific separator
 local resourcePath = reaper.GetResourcePath()
@@ -42,6 +46,11 @@ if not reaper.file_exists(targetDir) then
     -- If directory creation fails, show an error and exit
     if not success then
         local errorMessage = "Failed to create the subdirectory. Please create it manually.\n\nPath: " .. targetDir
+        if osType:find("Win") then
+            errorMessage = errorMessage .. "\n\nOn Windows: Use File Explorer"
+        else
+            errorMessage = errorMessage .. "\n\nOn macOS: Use Finder"
+        end
         reaper.MB(errorMessage, "Error", 0)
         return
     end
@@ -61,8 +70,8 @@ presetFile:close()
 
 -- Extract and process each preset name
 for presetName in presetsData:gmatch("Name=(.-)\n") do
-    -- Replace the placeholder in the script with the actual preset name
-    local newScript = originalScript:gsub("MyPreset", presetName)
+    -- Replace the entire line that declares preset_name with the new preset name
+    local newScript = replacePresetName(originalScript, presetName)
 
     -- Save the new script
     local newScriptPath = targetDir .. pathSeparator .. "set-hw-insert-" .. presetName .. ".lua"
@@ -70,5 +79,6 @@ for presetName in presetsData:gmatch("Name=(.-)\n") do
     outputFile:write(newScript)
     outputFile:close()
 end
+
 
 reaper.MB("Scripts generated successfully!", "Info", 0)
