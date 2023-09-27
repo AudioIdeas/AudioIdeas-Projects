@@ -1,8 +1,10 @@
 --[[
 @description Generate hardware insert scripts from ReaInsert presets
-@version 1.0
+@version 1.01
 @author Vesa Laasanen
 @changelog
+  1.01:
+  Script works even if the default preset name has been changed in set-hw-insert script
   1.0:
   Initial version
 @about
