@@ -85,8 +85,8 @@ initial version]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 AudioIdeas REAPER Scripts Repository\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Collection of Lua scripts for Cockos REAPER developed by Vesa Laasanen.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 AudioIdeas REAPER Projects Repository\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Collection of scripts and plugins for Cockos REAPER developed by Vesa Laasanen.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Installation\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For easy installation and updates, integrate this repository with the ReaPack REAPER extension:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 1.\tx360\tab Open REAPER and navigate to {\f1 Extensions} > {\f1 ReaPack} > {\f1 Import a repository}.\par}
