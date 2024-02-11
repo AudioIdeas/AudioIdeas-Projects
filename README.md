@@ -1,6 +1,6 @@
-# AudioIdeas REAPER Scripts Repository
+# AudioIdeas REAPER Projects Repository
 
-Collection of Lua scripts for Cockos REAPER developed by Vesa Laasanen.
+Collection of scripts and plugins for Cockos REAPER developed by Vesa Laasanen.
 
 ## Installation
 For easy installation and updates, integrate this repository with the ReaPack REAPER extension:
