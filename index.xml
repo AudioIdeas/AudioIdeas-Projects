@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Audioideas ReaScripts" commit="d61354ebf6e471f7759bfbc69a9acfd4fab9aa2b">
+<index version="1" name="Audioideas Projects" commit="d61354ebf6e471f7759bfbc69a9acfd4fab9aa2b">
   <category name="Hardware_insert_scripts">
     <reapack name="generate-hw-insert-scripts-from-presets.lua" type="script" desc="Generate hardware insert scripts from ReaInsert presets">
       <metadata>
@@ -20,14 +20,14 @@
       <version name="1.0" author="Vesa Laasanen" time="2023-09-26T18:52:10Z">
         <changelog><![CDATA[1.0:
 Initial version]]></changelog>
-        <source main="main">https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/461ede29cd75f05f8f02ac66c997a91e6a99d4b7/Hardware_insert_scripts/generate-hw-insert-scripts-from-presets.lua</source>
+        <source main="main">https://github.com/AudioIdeas/AudioIdeas-Projects/raw/461ede29cd75f05f8f02ac66c997a91e6a99d4b7/Hardware_insert_scripts/generate-hw-insert-scripts-from-presets.lua</source>
       </version>
       <version name="1.01" author="Vesa Laasanen" time="2023-09-27T07:11:18Z">
         <changelog><![CDATA[1.01:
 Script works even if the default preset name has been changed in set-hw-insert script
 1.0:
 Initial version]]></changelog>
-        <source main="main">https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/d61354ebf6e471f7759bfbc69a9acfd4fab9aa2b/Hardware_insert_scripts/generate-hw-insert-scripts-from-presets.lua</source>
+        <source main="main">https://github.com/AudioIdeas/AudioIdeas-Projects/raw/d61354ebf6e471f7759bfbc69a9acfd4fab9aa2b/Hardware_insert_scripts/generate-hw-insert-scripts-from-presets.lua</source>
       </version>
     </reapack>
     <reapack name="render_hw_inserts.lua" type="script" desc="Render hardware inserts">
@@ -49,7 +49,7 @@ Initial version]]></changelog>
       <version name="1.0" author="Vesa Laasanen" time="2023-09-27T06:43:15Z">
         <changelog><![CDATA[1.0:
 initial version]]></changelog>
-        <source main="main">https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/59ff183c674e8f41aedea4eefba569016ec512fc/Hardware_insert_scripts/render_hw_inserts.lua</source>
+        <source main="main">https://github.com/AudioIdeas/AudioIdeas-Projects/raw/59ff183c674e8f41aedea4eefba569016ec512fc/Hardware_insert_scripts/render_hw_inserts.lua</source>
       </version>
     </reapack>
     <reapack name="set-hw-insert.lua" type="script" desc="Set hardware insert">
@@ -76,7 +76,7 @@ initial version]]></changelog>
       <version name="1.0" author="Vesa Laasanen" time="2023-09-26T04:25:16Z">
         <changelog><![CDATA[1.0:
 initial version]]></changelog>
-        <source main="main">https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/225571d225b6f210a0ac90232c17a477c1391138/Hardware_insert_scripts/set-hw-insert.lua</source>
+        <source main="main">https://github.com/AudioIdeas/AudioIdeas-Projects/raw/225571d225b6f210a0ac90232c17a477c1391138/Hardware_insert_scripts/set-hw-insert.lua</source>
       </version>
     </reapack>
   </category>
@@ -90,7 +90,7 @@ initial version]]></changelog>
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Installation\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For easy installation and updates, integrate this repository with the ReaPack REAPER extension:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 1.\tx360\tab Open REAPER and navigate to {\f1 Extensions} > {\f1 ReaPack} > {\f1 Import a repository}.\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 2.\tx360\tab Copy and paste the following URL: {\f1 https://github.com/AudioIdeas/AudioIdeas-ReaScripts/raw/master/index.xml}\sa180\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 2.\tx360\tab Copy and paste the following URL: {\f1 https://github.com/AudioIdeas/AudioIdeas-Projects/raw/master/index.xml}\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Contributing\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Feedback and contributions are welcome. If you'd like to contribute or suggest changes, please make a pull request or open an issue.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Contact & More\par}
