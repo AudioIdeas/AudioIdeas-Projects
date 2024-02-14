@@ -1,11 +1,12 @@
 --[[
 @description Post-fader-insert
-@version 1.0@author Vesa Laasanen
+@version 1.0
+@author Vesa Laasanen
 @changelog
    1.0:
    initial version
 @about
-   # post-fader-insert script
+   # Post-fader-insert script
 
    This post fader insert functionality requires post-fader-insert.lua script and JS: post-fader-fx-start and JS: post-fader-fx-end plugins. The script monitors channel volume faders, track volume and trim volume automation and sends the combinedvalue to the plugins. You need to have post-fader-insert.lua script running when using the channel plugins.
 
