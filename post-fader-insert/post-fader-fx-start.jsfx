@@ -15,6 +15,7 @@ about:
    Dependencies:
      - None
 
+desc:Post-fader-insert-start
 slider1:1<-160,24,0.01>Volume    
 
 @sample    

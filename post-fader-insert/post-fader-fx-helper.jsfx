@@ -1,11 +1,9 @@
---[[
-@description Post-fader-insert-helper
-@version 1.0
-@author Vesa Laasanen
-@changelog
-   1.0:
-   initial version
-@about
+description: Post-fader-insert-start
+version: 1.02
+author: Vesa Laasanen
+changelog:
+   -1.02: initial version
+about:
    # Post-fader-insert-helper
 
    This post fader helper functionality requires post-fader-insert.lua script and JS: post-fader-fx-helper plugin. The script monitors channel volume faders, track volume and trim volume automation and sends the combinedvalue to the plugin. You need to have post-fader-insert.lua script running when using this plugin.
@@ -16,8 +14,8 @@
 
    Dependencies:
      - None
---]] 
-  
+
+desc:Post-fader-insert-helper
 slider1:1<-160,24,0.01>Volume
 
 @sample    
