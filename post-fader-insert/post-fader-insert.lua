@@ -144,7 +144,6 @@ function UpdateTrackJSFXVolume(track, trackIndex)
     for j = 0, fx_count - 1 do
         local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
         if retval and (fx_name:find("JS: Post-fader-insert-start", 1, true) or fx_name:find("JS: Post-fader-insert-end", 1, true) or fx_name:find("JS: Post-fader-insert-helper", 1, true)) then
-            reaper.ShowConsoleMsg("je")
             local param_index = 0 -- Assuming the volume par ameter index is 0
             local volume = lastVolumes[trackIndex]
             local trackVolume = lastTrackVolumes[trackIndex]
