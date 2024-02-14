@@ -1,8 +1,7 @@
 description: Post-fader-insert-start
-version: 1.03
+version: 1.04
 author: Vesa Laasanen
-changelog:
-   -1.03: initial version
+changelog: initial version
 about:
    # Post-fader-insert-start
 

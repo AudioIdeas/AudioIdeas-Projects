@@ -1,8 +1,7 @@
-description: Post-fader-insert-end
-version: 1.03
+desc:Post-fader-insert-end
+version: 1.04
 author: Vesa Laasanen
-changelog:
-   -1.03: initial version
+changelog: initial version
 about:
    # Post-fader-insert-end
 
@@ -15,7 +14,6 @@ about:
    Dependencies:
      - None
 
-desc:Post-fader-insert-end
 slider1:1<-160,24,0.01>Volume
 
 
