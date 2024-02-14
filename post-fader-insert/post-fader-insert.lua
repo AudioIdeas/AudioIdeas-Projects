@@ -1,9 +1,9 @@
 --[[
 @description Post-fader-insert
-@version 1.0
+@version 1.01
 @author Vesa Laasanen
 @changelog
-   1.0:
+   1.01:
    initial version
 @about
    # Post-fader-insert script
@@ -80,7 +80,7 @@ function ApplyCurrentAutomationVolume(track, trackIndex)
             local retval, value = reaper.Envelope_Evaluate(volumeEnvelope, position, 0, 0)
             local scaledValue = reaper.ScaleFromEnvelopeMode(reaper.GetEnvelopeScalingMode(volumeEnvelope), value)
             if retval then
-              lastTrackVolumes[trackIndex] = scaledValue            
+              lastTrackVolumes[trackIndex] = scaledValue 
             end
         end
     else
@@ -143,7 +143,8 @@ function UpdateTrackJSFXVolume(track, trackIndex)
     local fx_count = reaper.TrackFX_GetCount(track)
     for j = 0, fx_count - 1 do
         local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
-        if retval and (fx_name:find("JS: post-fader-fx-start", 1, true) or fx_name:find("JS: post-fader-fx-end", 1, true) or fx_name:find("JS: post-fader-fx-helper", 1, true)) then
+        if retval and (fx_name:find("JS: Post-fader-insert-start", 1, true) or fx_name:find("JS: Post-fader-insert-end", 1, true) or fx_name:find("JS: Post-fader-insert-helper", 1, true)) then
+            reaper.ShowConsoleMsg("je")
             local param_index = 0 -- Assuming the volume par ameter index is 0
             local volume = lastVolumes[trackIndex]
             local trackVolume = lastTrackVolumes[trackIndex]
@@ -192,4 +193,3 @@ function DelayedStart()
 end
 
 DelayedStart() -- Start the script
-
