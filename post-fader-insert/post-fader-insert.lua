@@ -1,9 +1,9 @@
 --[[
 @description Post-fader-insert
-@version 1.01
+@version 1.02
 @author Vesa Laasanen
 @changelog
-   1.01:
+   1.02:
    initial version
 @about
    # Post-fader-insert script
