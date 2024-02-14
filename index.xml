@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Audioideas Projects" commit="8c8086df293a10e5b2a5d1dab4b22b58cbc9c08b">
+<index version="1" name="Audioideas Projects" commit="e58998a0a185e2813d7517f34c263df3b2b2564b">
   <category name="Hardware_insert_scripts">
     <reapack name="generate-hw-insert-scripts-from-presets.lua" type="script" desc="Generate hardware insert scripts from ReaInsert presets">
       <metadata>
@@ -81,13 +81,57 @@ initial version]]></changelog>
     </reapack>
   </category>
   <category name="post-fader-insert">
+    <reapack name="post-fader-fx-end.jsfx" type="effect" desc="Post-fader-insert-end">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Post-fader-insert-end\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This post fader insert functionality requires post-fader-insert.lua script and JS: post-fader-fx-start and JS: post-fader-fx-end plugins. The script monitors channel volume faders, track volume and trim volume automation and sends the combinedvalue to the plugins. You need to have post-fader-insert.lua script running when using the channel plugins.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Usage Instructions:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Run post-fader-insert.lua script\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Insert JS: post-fader-fx-start and JS: post-fader-fx-end plugins to a channel. Any plugin between these plugins will emulate post-fader insert. JS: post-fader-fx-start multiplies the signal volume by channel fader value and JS: post-fader-fx-end reverses the volume change.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Dependencies:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab None\sa180\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0" author="Vesa Laasanen" time="2024-02-14T17:17:54Z">
+        <changelog><![CDATA[1.0:
+initial version]]></changelog>
+        <source>https://github.com/AudioIdeas/AudioIdeas-Projects/raw/e58998a0a185e2813d7517f34c263df3b2b2564b/post-fader-insert/post-fader-fx-end.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="post-fader-fx-helper.jsfx" type="effect" desc="Post-fader-insert-helper">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Post-fader-insert-helper\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This post fader helper functionality requires post-fader-insert.lua script and JS: post-fader-fx-helper plugin. The script monitors channel volume faders, track volume and trim volume automation and sends the combinedvalue to the plugin. You need to have post-fader-insert.lua script running when using this plugin.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Usage Instructions:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Run post-fader-insert.lua script\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Insert JS: post-fader-fx-helper to a channel. You can now modulate other plugins with post-fader volume parameter.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Dependencies:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab None\sa180\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0" author="Vesa Laasanen" time="2024-02-14T17:17:54Z">
+        <changelog><![CDATA[1.0:
+initial version]]></changelog>
+        <source>https://github.com/AudioIdeas/AudioIdeas-Projects/raw/e58998a0a185e2813d7517f34c263df3b2b2564b/post-fader-insert/post-fader-fx-helper.jsfx</source>
+      </version>
+    </reapack>
     <reapack name="post-fader-fx-start.jsfx" type="effect" desc="Post-fader-insert-start">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 post-fader-insert-start\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Post-fader-insert-start\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This post fader insert functionality requires post-fader-insert.lua script and JS: post-fader-fx-start and JS: post-fader-fx-end plugins. The script monitors channel volume faders, track volume and trim volume automation and sends the combinedvalue to the plugins. You need to have post-fader-insert.lua script running when using the channel plugins.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Usage Instructions:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Run post-fader-insert.lua script\par}
@@ -109,7 +153,7 @@ initial version]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 post-fader-insert script\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Post-fader-insert script\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This post fader insert functionality requires post-fader-insert.lua script and JS: post-fader-fx-start and JS: post-fader-fx-end plugins. The script monitors channel volume faders, track volume and trim volume automation and sends the combinedvalue to the plugins. You need to have post-fader-insert.lua script running when using the channel plugins.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Alternatively you can use post-fader-fx-helper plugin to modulate other plugins with post-fader volume parameter.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Usage Instructions:\par}
@@ -125,6 +169,11 @@ initial version]]></changelog>
         <changelog><![CDATA[1.0:
 initial version]]></changelog>
         <source main="main">https://github.com/AudioIdeas/AudioIdeas-Projects/raw/8c8086df293a10e5b2a5d1dab4b22b58cbc9c08b/post-fader-insert/post-fader-insert.lua</source>
+      </version>
+      <version name="1.0" author="Vesa Laasanen" time="2024-02-14T17:17:54Z">
+        <changelog><![CDATA[1.0:
+initial version]]></changelog>
+        <source main="main">https://github.com/AudioIdeas/AudioIdeas-Projects/raw/e58998a0a185e2813d7517f34c263df3b2b2564b/post-fader-insert/post-fader-insert.lua</source>
       </version>
     </reapack>
   </category>
