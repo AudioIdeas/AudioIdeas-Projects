@@ -1,7 +1,9 @@
 desc:Post-fader-insert-helper
 version: 1.04
 author: Vesa Laasanen
-changelog: initial version
+changelog: 
+1.1: Bugfix
+1.04 initial version
 about:
    # Post-fader-insert-helper
 
@@ -14,7 +16,7 @@ about:
    Dependencies:
      - None
 
-slider1:1<-160,24,0.01>Volume
+slider1:0<-160,24,0.01>Volume
 
 @sample    
 // Apply the volume control to the audio sample  

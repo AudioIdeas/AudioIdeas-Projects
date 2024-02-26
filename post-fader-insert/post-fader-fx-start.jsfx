@@ -1,7 +1,9 @@
 description: Post-fader-insert-start
-version: 1.04
+version: 1.1
 author: Vesa Laasanen
-changelog: initial version
+changelog: 
+1.1: mute and solo functionality
+1.04: initial version
 about:
    # Post-fader-insert-start
 
@@ -15,10 +17,18 @@ about:
      - None
 
 desc:Post-fader-insert-start
-slider1:1<-160,24,0.01>Volume    
+slider1:0<-160,24,0.01>Volume
+slider2:0<0,1,1>Mute
+slider3:0<0,1,1>Solo
+slider4:0<0,1,1>Solo on other channel
 
-@sample    
+@sample
 amp = 10^(slider1/20);
-spl0 *= amp;
-spl1 *= amp;
+
+
+// Solo logic would be more complex and requires global state management
+// Assuming you have a mechanism to check if any track is soloed
+
+spl0 *= amp * (1 - slider2) * (1 - slider4);
+spl1 *= amp * (1 - slider2) * (1 - slider4);
 

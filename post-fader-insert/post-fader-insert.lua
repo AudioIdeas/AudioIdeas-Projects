@@ -1,8 +1,10 @@
 --[[
 @description Post-fader-insert
-@version 1.02
+@version 1.1
 @author Vesa Laasanen
 @changelog
+   1.1:
+   Mute and solo functionality
    1.02:
    initial version
 @about
@@ -21,14 +23,26 @@
      - None
 --]] 
 
+
 local volumeDelay = 0.1 -- Delay between volume checks
 local pluginDelay = 1.0 -- Delay between plugin checks
 local lastVolumes = {} -- Last known volumes for each track
 local lastTrackVolumes = {} -- Last known track volumes for each track
 local lastTrimVolumes = {} -- Last known trim volumes for each track
+local lastMutes = {}
+local lastSolos = {}
 local lastFXCounts = {} -- Last known FX counts for each track
 local lastPluginCheckTime = reaper.time_precise() -- Time of the last plugin check
 local lastPosition = reaper.GetPlayPosition() -- Initialize with an impossible value
+
+function solosActive()
+    for _, value in pairs(lastSolos) do
+        if value ~= 0 then
+            return true -- Found a non-zero value, return true
+        end
+    end
+    return false -- All values are zero, return false
+end
 
 function IsEnvelopeActive(envelope)
     local retval, envelopeStateChunk = reaper.GetEnvelopeStateChunk(envelope, "", false)
@@ -86,7 +100,6 @@ function ApplyCurrentAutomationVolume(track, trackIndex)
     else
         lastTrackVolumes[trackIndex] = 1
     end
-
     if IsEnvelopeActive(trimVolumeEnvelope) then
         if trimVolumeEnvelope then
             local retval, value = reaper.Envelope_Evaluate(trimVolumeEnvelope, position, 0, 0)
@@ -101,8 +114,8 @@ function ApplyCurrentAutomationVolume(track, trackIndex)
     UpdateTrackJSFXVolume(track, trackIndex)
 end
 
--- Checks and updates the volume for each track and its JS FX
-function UpdateVolumes()
+
+function UpdateChannel()
     local track_count = reaper.CountTracks(0)
     for i = 0, track_count - 1 do
         local track = reaper.GetTrack(0, i)
@@ -111,8 +124,19 @@ function UpdateVolumes()
             lastVolumes[i] = volume
             UpdateTrackJSFXVolume(track, i)
         end
+        local mute = reaper.GetMediaTrackInfo_Value(track, "B_MUTE")
+        if not lastMutes[i] or lastMutes[i] ~= mute then
+            lastMutes[i] = mute
+            UpdateTrackJSFXMute(track, i)
+        end
+        local solo = reaper.GetMediaTrackInfo_Value(track, "I_SOLO")
+        if not lastSolos[i] or lastSolos[i] ~= solo then
+            lastSolos[i] = solo
+            UpdateTrackJSFXSolo(track, i)
+        end
     end
-end
+end        
+
 
 -- Checks and updates the plugin count, if necessary
 function UpdatePluginsIfNeeded()
@@ -131,9 +155,17 @@ function CheckAndHandlePluginChanges()
         local fx_count = reaper.TrackFX_GetCount(track)
         if not lastFXCounts[i] or lastFXCounts[i] ~= fx_count then
             lastFXCounts[i] = fx_count
-            -- Update JS FX volumes if there's a change in FX count
-            local volume = reaper.GetMediaTrackInfo_Value(track, "D_VOL")
-            UpdateTrackJSFXVolume(track, i, volume)
+            for j = 0, fx_count - 1 do
+                local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
+                if retval and (fx_name:find("JS: Post-fader-insert-start", 1, true) or fx_name:find("JS: Post-fader-insert-end", 1, true) or fx_name:find("JS: Post-fader-insert-helper", 1, true)) then
+                    local volume = reaper.GetMediaTrackInfo_Value(track, "D_VOL")
+                    UpdateTrackJSFXVolume(track, i)
+                    local mute = reaper.GetMediaTrackInfo_Value(track, "B_MUTE")
+                    UpdateTrackJSFXMute(track, i)
+                    local solo = reaper.GetMediaTrackInfo_Value(track, "I_SOLO")
+                    UpdateTrackJSFXSolo(track, i)
+                end
+            end
         end
     end
 end
@@ -164,6 +196,58 @@ function UpdateTrackJSFXVolume(track, trackIndex)
     end
 end
 
+function UpdateTrackJSFXMute(track, trackIndex)
+    local fx_count = reaper.TrackFX_GetCount(track)
+    for j = 0, fx_count - 1 do
+        local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
+        if retval and (fx_name:find("JS: Post-fader-insert-start", 1, true) ) then
+            local param_index = 1 -- Assuming the mute parameter index is 1
+            local mute = lastMutes[trackIndex]
+            if not lastMutes[trackIndex] then
+              mute = 0
+            end
+            reaper.TrackFX_SetParam(track, j, param_index, mute)
+        end
+    end
+end
+
+function UpdateTrackJSFXSolo(track, trackIndex)
+    local fx_count = reaper.TrackFX_GetCount(track)
+    local solo_index = 2 -- Assuming the solo parameter index is 2
+    local solo_other_index = 3 -- Assuming the solo parameter index is 2 
+    for j = 0, fx_count - 1 do
+        local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
+        if retval and (fx_name:find("JS: Post-fader-insert-start", 1, true) ) then
+            local solo = lastSolos[trackIndex]
+            if not lastSolos[trackIndex] then
+              solo = 0
+            end
+            reaper.TrackFX_SetParam(track, j, solo_index, solo)
+            reaper.TrackFX_SetParam(track, j, solo_other_index, 0)
+        end
+    end
+    local solosAreActive = 0
+    if solosActive() then
+        solosAreActive = 1
+    end
+    local track_count = reaper.CountTracks(0)
+    for i = 0, track_count - 1 do
+        local track = reaper.GetTrack(0, i)
+        local fx_count = reaper.TrackFX_GetCount(track)
+        for j = 0, fx_count - 1 do
+            local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
+            if retval and (fx_name:find("JS: Post-fader-insert-start", 1, true) ) then
+                if solosAreActive == 0 then
+                    reaper.TrackFX_SetParam(track, j, solo_other_index, 0)
+                else
+                    local trackSolo = 1 - reaper.TrackFX_GetParam(track, j, solo_index)
+                    reaper.TrackFX_SetParam(track, j, solo_other_index, trackSolo)
+                end
+            end 
+        end
+    end    
+end
+
 -- Main loop function, managing delay execution and calling update functions
 function MainLoop() 
     if reaper.GetPlayState() ~= 0 then -- If REAPER is playing
@@ -171,7 +255,7 @@ function MainLoop()
     else
         ProcessPositionChange()
     end
-    UpdateVolumes()
+    UpdateChannel() 
     UpdatePluginsIfNeeded()
 
     -- Schedule the next update using deferred execution
