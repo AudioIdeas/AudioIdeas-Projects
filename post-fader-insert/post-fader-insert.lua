@@ -1,9 +1,9 @@
 --[[
 @description Post-fader-insert
-@version 1.1
+@version 1.10
 @author Vesa Laasanen
 @changelog
-   1.1:
+   1.10:
    Mute and solo functionality
    1.02:
    initial version

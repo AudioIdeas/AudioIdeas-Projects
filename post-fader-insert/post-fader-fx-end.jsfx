@@ -1,9 +1,9 @@
 desc: Post-fader-insert-end
-version: 1.04
+version: 1.10
 author: Vesa Laasanen
 changelog: 
-1.1: Bugfix
-1.04: initial version
+- 1.10: Bugfix
+- 1.04: initial version
 about:
    # Post-fader-insert-end
 
