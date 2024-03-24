@@ -1,8 +1,10 @@
 --[[
 @description Post-fader-insert
-@version 1.10
+@version 1.11
 @author Vesa Laasanen
 @changelog
+   1.11:
+   Fix bug with opening a project
    1.10:
    Mute and solo functionality
    1.02:
@@ -89,30 +91,27 @@ function ApplyCurrentAutomationVolume(track, trackIndex)
     else 
         position = lastPosition
     end
-    if IsEnvelopeActive(volumeEnvelope) then
-        if volumeEnvelope then
-            local retval, value = reaper.Envelope_Evaluate(volumeEnvelope, position, 0, 0)
-            local scaledValue = reaper.ScaleFromEnvelopeMode(reaper.GetEnvelopeScalingMode(volumeEnvelope), value)
-            if retval then
-              lastTrackVolumes[trackIndex] = scaledValue 
-            end
+    if volumeEnvelope and IsEnvelopeActive(volumeEnvelope) then
+        local retval, value = reaper.Envelope_Evaluate(volumeEnvelope, position, 0, 0)
+        local scaledValue = reaper.ScaleFromEnvelopeMode(reaper.GetEnvelopeScalingMode(volumeEnvelope), value)
+        if retval then
+            lastTrackVolumes[trackIndex] = scaledValue 
         end
     else
         lastTrackVolumes[trackIndex] = 1
     end
-    if IsEnvelopeActive(trimVolumeEnvelope) then
-        if trimVolumeEnvelope then
-            local retval, value = reaper.Envelope_Evaluate(trimVolumeEnvelope, position, 0, 0)
-            local scaledValue = reaper.ScaleFromEnvelopeMode(reaper.GetEnvelopeScalingMode(trimVolumeEnvelope), value)
-            if retval then
-                lastTrimVolumes[trackIndex] =  scaledValue
-            end
+    if trimVolumeEnvelope and IsEnvelopeActive(trimVolumeEnvelope) then
+        local retval, value = reaper.Envelope_Evaluate(trimVolumeEnvelope, position, 0, 0)
+        local scaledValue = reaper.ScaleFromEnvelopeMode(reaper.GetEnvelopeScalingMode(trimVolumeEnvelope), value)
+        if retval then
+            lastTrimVolumes[trackIndex] = scaledValue
         end
     else
         lastTrimVolumes[trackIndex] = 1
     end
     UpdateTrackJSFXVolume(track, trackIndex)
 end
+
 
 
 function UpdateChannel()
