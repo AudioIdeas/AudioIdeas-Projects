@@ -158,10 +158,10 @@ function CheckAndHandlePluginChanges()
             lastFXCounts[i] = fx_count
             for j = 0, fx_count - 1 do
                 local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
-                if retval then
-                    if containsIgnoreCase(fx_name, "Post-fader-insert-end") or
-                       containsIgnoreCase(fx_name, "Post-fader-insert-start") or
-                       containsIgnoreCase(fx_name, "Post-fader-insert-helper") then
+        if retval and containsIgnoreCase(fx_name, "post-fader") then
+                    if containsIgnoreCase(fx_name, "end") or
+                       containsIgnoreCase(fx_name, "start") or
+                       containsIgnoreCase(fx_name, "helper") then
                         local volume = reaper.GetMediaTrackInfo_Value(track, "D_VOL")
                         UpdateTrackJSFXVolume(track, i)
                         local mute = reaper.GetMediaTrackInfo_Value(track, "B_MUTE")
@@ -186,10 +186,10 @@ function UpdateTrackJSFXVolume(track, trackIndex)
     local fx_count = reaper.TrackFX_GetCount(track)
     for j = 0, fx_count - 1 do
         local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
-        if retval then
-            if containsIgnoreCase(fx_name, "Post-fader-insert-end") or
-               containsIgnoreCase(fx_name, "Post-fader-insert-start") or
-               containsIgnoreCase(fx_name, "Post-fader-insert-helper") then
+        if retval and containsIgnoreCase(fx_name, "post-fader") then
+            if containsIgnoreCase(fx_name, "end") or
+               containsIgnoreCase(fx_name, "start") or
+               containsIgnoreCase(fx_name, "helper") then
                 local param_index = 0 -- Assuming the volume par ameter index is 0
                 local volume = lastVolumes[trackIndex]
                 local trackVolume = lastTrackVolumes[trackIndex]
@@ -215,8 +215,8 @@ function UpdateTrackJSFXMute(track, trackIndex)
     local fx_count = reaper.TrackFX_GetCount(track)
     for j = 0, fx_count - 1 do
         local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
-        if retval then
-            if containsIgnoreCase(fx_name, "Post-fader-insert-start") then
+        if retval and containsIgnoreCase(fx_name, "post-fader") then
+            if containsIgnoreCase(fx_name, "start") then
                 local param_index = 1 -- Assuming the mute parameter index is 1
                 local mute = lastMutes[trackIndex]
                 if not lastMutes[trackIndex] then
@@ -234,8 +234,8 @@ function UpdateTrackJSFXSolo(track, trackIndex)
     local solo_other_index = 3 -- Assuming the solo parameter index is 2
     for j = 0, fx_count - 1 do
         local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
-        if retval then
-            if containsIgnoreCase(fx_name, "Post-fader-insert-start") then
+        if retval and containsIgnoreCase(fx_name, "post-fader") then
+            if containsIgnoreCase(fx_name, "start") then
                 local solo = lastSolos[trackIndex]
                 if not lastSolos[trackIndex] then
                   solo = 0
@@ -255,8 +255,8 @@ function UpdateTrackJSFXSolo(track, trackIndex)
         local fx_count = reaper.TrackFX_GetCount(track)
         for j = 0, fx_count - 1 do
             local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
-            if retval then
-                if containsIgnoreCase(fx_name, "Post-fader-insert-start") then
+        if retval and containsIgnoreCase(fx_name, "post-fader") then
+                if containsIgnoreCase(fx_name, "start") then
                     if solosAreActive == 0 then
                         reaper.TrackFX_SetParam(track, j, solo_other_index, 0)
                     else
