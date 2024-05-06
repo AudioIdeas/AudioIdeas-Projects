@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Audioideas Projects" commit="0170c21de5cecb4b2158af1ee5eac3d019ccada7">
+<index version="1" name="Audioideas Projects" commit="382a283a2addc98a1e73eda2a378f40dba4736df">
   <category name="Hardware_insert_scripts">
     <reapack name="generate-hw-insert-scripts-from-presets.lua" type="script" desc="Generate hardware insert scripts from ReaInsert presets">
       <metadata>
@@ -249,6 +249,17 @@ Mute and solo functionality
 1.02:
 initial version]]></changelog>
         <source main="main">https://github.com/AudioIdeas/AudioIdeas-Projects/raw/0170c21de5cecb4b2158af1ee5eac3d019ccada7/post-fader-insert/post-fader-insert.lua</source>
+      </version>
+      <version name="1.12" author="Vesa Laasanen" time="2024-05-06T12:36:00Z">
+        <changelog><![CDATA[1.12:
+Fix bug with finding plugins with pathnames
+1.11:
+Fix bug with opening a project
+1.10:
+Mute and solo functionality
+1.02:
+initial version]]></changelog>
+        <source main="main">https://github.com/AudioIdeas/AudioIdeas-Projects/raw/382a283a2addc98a1e73eda2a378f40dba4736df/post-fader-insert/post-fader-insert.lua</source>
       </version>
     </reapack>
   </category>
