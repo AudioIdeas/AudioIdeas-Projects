@@ -1,9 +1,9 @@
 --[[
 @description Post-fader-insert
-@version 1.12
+@version 1.13
 @author Vesa Laasanen
 @changelog
-   1.12:
+   1.13:
    Fix bug with finding plugins with pathnames
    1.11:
    Fix bug with opening a project
