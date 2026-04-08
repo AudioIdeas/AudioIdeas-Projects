@@ -5,9 +5,6 @@
 @changelog
    1.22:
    GUI toggle for mute/solo mode, persisted via ExtState
-   1.21:
-   Make mute/solo handling optional (default off)
-   1.20:
    Support FX containers (recursive)
    1.13:
    Fix bug with finding plugins with pathnames
