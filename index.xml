@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Audioideas Projects" commit="d1f447bcf345dac5279fdf5810b61c93f6ac8783">
+<index version="1" name="Audioideas Projects" commit="c76392dbc7761f39ce123c9909e93f173f7bc2ba">
   <category name="Hardware_insert_scripts">
     <reapack name="generate-hw-insert-scripts-from-presets.lua" type="script" desc="Generate hardware insert scripts from ReaInsert presets">
       <metadata>
@@ -198,17 +198,18 @@ initial version]]></changelog>
     </reapack>
     <reapack name="post-fader-insert.lua" type="script" desc="Post-fader-insert">
       <metadata>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Post-fader-insert script\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Post-fader-insert script\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This post fader insert functionality requires post-fader-insert.lua script and JS: post-fader-fx-start and JS: post-fader-fx-end plugins. The script monitors channel volume faders, track volume and trim volume automation and sends the combinedvalue to the plugins. You need to have post-fader-insert.lua script running when using the channel plugins.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Alternatively you can use post-fader-fx-helper plugin to modulate other plugins with post-fader volume parameter.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Usage Instructions:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Run post-fader-insert.lua script\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Insert JS: post-fader-fx-start and JS: post-fader-fx-end plugins to a channel. Any plugin between these plugins will emulate post-fader insert. JS: post-fader-fx-start multiplies the signal volume by channel fader value and JS: post-fader-fx-end reverses the volume change.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Alternatively insert JS: post-fader-fx-helper to a channel. You can now modulate other plugins with post-fader volume parameter.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Mute/Solo Mode: The script window has a toggle button for "Mute/Solo Mode". When off (default), REAPER handles mute/solo natively - use this for folder tracks and Dolby Atmos Composer. When on, the script controls mute/solo via the JSFX plugins - use this for Airwindows Console. The setting is saved globally and persists across REAPER restarts.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Dependencies:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab None\sa180\par}
 }
@@ -272,22 +273,39 @@ Mute and solo functionality
 initial version]]></changelog>
         <source main="main">https://github.com/AudioIdeas/AudioIdeas-Projects/raw/d1f447bcf345dac5279fdf5810b61c93f6ac8783/post-fader-insert/post-fader-insert.lua</source>
       </version>
+      <version name="1.22" author="Vesa Laasanen" time="2026-04-08T07:39:32Z">
+        <changelog><![CDATA[1.22:
+GUI toggle for mute/solo mode, persisted via ExtState
+1.21:
+Make mute/solo handling optional (default off)
+1.20:
+Support FX containers (recursive)
+1.13:
+Fix bug with finding plugins with pathnames
+1.11:
+Fix bug with opening a project
+1.10:
+Mute and solo functionality
+1.02:
+initial version]]></changelog>
+        <source main="main">https://github.com/AudioIdeas/AudioIdeas-Projects/raw/330a903241490f216c8a334d8200358da824b694/post-fader-insert/post-fader-insert.lua</source>
+      </version>
     </reapack>
   </category>
   <metadata>
-    <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+    <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 AudioIdeas REAPER Projects Repository\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 AudioIdeas REAPER Projects Repository\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Collection of scripts and plugins for Cockos REAPER developed by Vesa Laasanen.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Installation\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Installation\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For easy installation and updates, integrate this repository with the ReaPack REAPER extension:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 1.\tx360\tab Open REAPER and navigate to {\f1 Extensions} > {\f1 ReaPack} > {\f1 Import a repository}.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 2.\tx360\tab Copy and paste the following URL: {\f1 https://github.com/AudioIdeas/AudioIdeas-Projects/raw/master/index.xml}\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Contributing\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Contributing\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Feedback and contributions are welcome. If you'd like to contribute or suggest changes, please make a pull request or open an issue.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Contact & More\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Contact & More\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b YouTube}: {\field{\*\fldinst{HYPERLINK "https://www.youtube.com/@audioideas"}}{\fldrslt{\ul
 Audio Ideas
 }}}
