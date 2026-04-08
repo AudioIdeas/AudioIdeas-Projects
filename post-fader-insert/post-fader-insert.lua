@@ -1,8 +1,14 @@
 --[[
 @description Post-fader-insert
-@version 1.13
+@version 1.22
 @author Vesa Laasanen
 @changelog
+   1.22:
+   GUI toggle for mute/solo mode, persisted via ExtState
+   1.21:
+   Make mute/solo handling optional (default off)
+   1.20:
+   Support FX containers (recursive)
    1.13:
    Fix bug with finding plugins with pathnames
    1.11:
@@ -23,29 +29,113 @@
      - Insert JS: post-fader-fx-start and JS: post-fader-fx-end plugins to a channel. Any plugin between these plugins will emulate post-fader insert. JS: post-fader-fx-start multiplies the signal volume by channel fader value and JS: post-fader-fx-end reverses the volume change.
      - Alternatively insert JS: post-fader-fx-helper to a channel. You can now modulate other plugins with post-fader volume parameter.
 
+   Mute/Solo Mode:
+     The script window has a toggle button for "Mute/Solo Mode". When off (default), REAPER
+     handles mute/solo natively - use this for folder tracks and Dolby Atmos Composer. When on,
+     the script controls mute/solo via the JSFX plugins - use this for Airwindows Console.
+     The setting is saved globally and persists across REAPER restarts.
+
    Dependencies:
      - None
 --]]
 
 
-local volumeDelay = 0.1 -- Delay between volume checks
-local pluginDelay = 1.0 -- Delay between plugin checks
-local lastVolumes = {} -- Last known volumes for each track
-local lastTrackVolumes = {} -- Last known track volumes for each track
-local lastTrimVolumes = {} -- Last known trim volumes for each track
+local EXT_SECTION = "post_fader_insert"
+local EXT_KEY = "enable_mute_solo"
+local volumeDelay = 0.1
+local pluginDelay = 1.0
+local lastVolumes = {}
+local lastTrackVolumes = {}
+local lastTrimVolumes = {}
 local lastMutes = {}
 local lastSolos = {}
-local lastFXCounts = {} -- Last known FX counts for each track
-local lastPluginCheckTime = reaper.time_precise() -- Time of the last plugin check
-local lastPosition = reaper.GetPlayPosition() -- Initialize with an impossible value
+local lastFXCounts = {}
+local lastPluginCheckTime = reaper.time_precise()
+local lastPosition = reaper.GetPlayPosition()
+
+local guiW = 220
+local guiH = 50
+local btnX = 10
+local btnY = 10
+local btnW = 200
+local btnH = 30
+local mouseWasDown = false
+
+function GetEnableMuteSolo()
+    local val = reaper.GetExtState(EXT_SECTION, EXT_KEY)
+    return val == "1"
+end
+
+function SetEnableMuteSolo(val)
+    reaper.SetExtState(EXT_SECTION, EXT_KEY, val and "1" or "0", true)
+end
+
+function InitGUI()
+    gfx.init("Post-Fader Insert", guiW, guiH, 0)
+    gfx.setfont(1, "Arial", 13)
+end
+
+function UpdateGUI()
+    local enabled = GetEnableMuteSolo()
+    local label = enabled and "Mute/Solo: ON (Internal)" or "Mute/Solo: OFF (Native)"
+    if enabled then
+        gfx.set(0.3, 0.5, 0.3, 1)
+    else
+        gfx.set(0.3, 0.3, 0.4, 1)
+    end
+    gfx.rect(btnX, btnY, btnW, btnH)
+    gfx.set(1, 1, 1, 1)
+    local strW, strH = gfx.measurestr(label)
+    gfx.x = btnX + (btnW - strW) / 2
+    gfx.y = btnY + (btnH - strH) / 2
+    gfx.drawstr(label)
+    gfx.update()
+end
+
+function HandleGUIClick()
+    local char = gfx.getchar()
+    if char == -1 then return false end
+    local mouseDown = gfx.mouse_cap & 1 == 1
+    local inBtn = gfx.mouse_x >= btnX and gfx.mouse_x <= btnX + btnW
+                  and gfx.mouse_y >= btnY and gfx.mouse_y <= btnY + btnH
+    if mouseDown and not mouseWasDown and inBtn then
+        SetEnableMuteSolo(not GetEnableMuteSolo())
+        local track_count = reaper.CountTracks(0)
+        for i = 0, track_count - 1 do
+            local track = reaper.GetTrack(0, i)
+            local fxs = FindPostFaderFX(track)
+            if #fxs > 0 then
+                if GetEnableMuteSolo() then
+                    UpdateTrackJSFXMute(track, i)
+                    UpdateTrackJSFXSolo(track, i)
+                else
+                    ResetMuteSolo(track, i)
+                end
+            end
+        end
+    end
+    mouseWasDown = mouseDown
+    return true
+end
+
+function ResetMuteSolo(track, trackIndex)
+    local fxs = FindPostFaderFX(track)
+    for _, fx in ipairs(fxs) do
+        if containsIgnoreCase(fx.name, "start") then
+            reaper.TrackFX_SetParam(track, fx.idx, 1, 0)
+            reaper.TrackFX_SetParam(track, fx.idx, 2, 0)
+            reaper.TrackFX_SetParam(track, fx.idx, 3, 0)
+        end
+    end
+end
 
 function solosActive()
     for _, value in pairs(lastSolos) do
         if value ~= 0 then
-            return true -- Found a non-zero value, return true
+            return true
         end
     end
-    return false -- All values are zero, return false
+    return false
 end
 
 function IsEnvelopeActive(envelope)
@@ -58,9 +148,9 @@ function IsEnvelopeActive(envelope)
 end
 
 function ProcessPositionChange()
-    local currentPosition = reaper.GetCursorPosition() -- Get current position of the playhead
+    local currentPosition = reaper.GetCursorPosition()
     if currentPosition ~= lastPosition then
-        lastPosition = currentPosition -- Update last known position
+        lastPosition = currentPosition
         ProcessTracksWithAutomation()
     end
 end
@@ -114,8 +204,6 @@ function ApplyCurrentAutomationVolume(track, trackIndex)
     UpdateTrackJSFXVolume(track, trackIndex)
 end
 
-
-
 function UpdateChannel()
     local track_count = reaper.CountTracks(0)
     for i = 0, track_count - 1 do
@@ -125,21 +213,21 @@ function UpdateChannel()
             lastVolumes[i] = volume
             UpdateTrackJSFXVolume(track, i)
         end
-        local mute = reaper.GetMediaTrackInfo_Value(track, "B_MUTE")
-        if not lastMutes[i] or lastMutes[i] ~= mute then
-            lastMutes[i] = mute
-            UpdateTrackJSFXMute(track, i)
-        end
-        local solo = reaper.GetMediaTrackInfo_Value(track, "I_SOLO")
-        if not lastSolos[i] or lastSolos[i] ~= solo then
-            lastSolos[i] = solo
-            UpdateTrackJSFXSolo(track, i)
+        if GetEnableMuteSolo() then
+            local mute = reaper.GetMediaTrackInfo_Value(track, "B_MUTE")
+            if not lastMutes[i] or lastMutes[i] ~= mute then
+                lastMutes[i] = mute
+                UpdateTrackJSFXMute(track, i)
+            end
+            local solo = reaper.GetMediaTrackInfo_Value(track, "I_SOLO")
+            if not lastSolos[i] or lastSolos[i] ~= solo then
+                lastSolos[i] = solo
+                UpdateTrackJSFXSolo(track, i)
+            end
         end
     end
 end
 
-
--- Checks and updates the plugin count, if necessary
 function UpdatePluginsIfNeeded()
     local currentTime = reaper.time_precise()
     if currentTime - lastPluginCheckTime >= pluginDelay then
@@ -148,7 +236,6 @@ function UpdatePluginsIfNeeded()
     end
 end
 
--- Handles plugin changes for each track
 function CheckAndHandlePluginChanges()
     local track_count = reaper.CountTracks(0)
     for i = 0, track_count - 1 do
@@ -156,19 +243,14 @@ function CheckAndHandlePluginChanges()
         local fx_count = reaper.TrackFX_GetCount(track)
         if not lastFXCounts[i] or lastFXCounts[i] ~= fx_count then
             lastFXCounts[i] = fx_count
-            for j = 0, fx_count - 1 do
-                local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
-        if retval and containsIgnoreCase(fx_name, "post-fader") then
-                    if containsIgnoreCase(fx_name, "end") or
-                       containsIgnoreCase(fx_name, "start") or
-                       containsIgnoreCase(fx_name, "helper") then
-                        local volume = reaper.GetMediaTrackInfo_Value(track, "D_VOL")
-                        UpdateTrackJSFXVolume(track, i)
-                        local mute = reaper.GetMediaTrackInfo_Value(track, "B_MUTE")
-                        UpdateTrackJSFXMute(track, i)
-                        local solo = reaper.GetMediaTrackInfo_Value(track, "I_SOLO")
-                        UpdateTrackJSFXSolo(track, i)
-                    end
+            local fxs = FindPostFaderFX(track)
+            if #fxs > 0 then
+                UpdateTrackJSFXVolume(track, i)
+                if GetEnableMuteSolo() then
+                    UpdateTrackJSFXMute(track, i)
+                    UpdateTrackJSFXSolo(track, i)
+                else
+                    ResetMuteSolo(track, i)
                 end
             end
         end
@@ -176,73 +258,96 @@ function CheckAndHandlePluginChanges()
 end
 
 function containsIgnoreCase(fullString, substring)
-    local lowerFullString = fullString:lower()  -- Convert full string to lowercase
-    local lowerSubstring = substring:lower()   -- Convert substring to lowercase
+    local lowerFullString = fullString:lower()
+    local lowerSubstring = substring:lower()
     return lowerFullString:find(lowerSubstring, 1, true) ~= nil
 end
 
--- Updates the volume of JS FX for a specific track
-function UpdateTrackJSFXVolume(track, trackIndex)
-    local fx_count = reaper.TrackFX_GetCount(track)
-    for j = 0, fx_count - 1 do
-        local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
-        if retval and containsIgnoreCase(fx_name, "post-fader") then
-            if containsIgnoreCase(fx_name, "end") or
-               containsIgnoreCase(fx_name, "start") or
-               containsIgnoreCase(fx_name, "helper") then
-                local param_index = 0 -- Assuming the volume par ameter index is 0
-                local volume = lastVolumes[trackIndex]
-                local trackVolume = lastTrackVolumes[trackIndex]
-                local trimVolume = lastTrimVolumes[trackIndex]
-                if not lastVolumes[trackIndex] then
-                  volume = 1
-                end
-                if not lastTrackVolumes[trackIndex] then
-                  trackVolume = 1
-                end
-                if not lastTrackVolumes[trackIndex] then
-                  trimVolume = 1
-                end
-                local totalAmplitude = volume*trackVolume*trimVolume
-                totalVolume = 20 * math.log(totalAmplitude,10)
-                reaper.TrackFX_SetParam(track, j, param_index, totalVolume)
+function EnumerateFXRecursive(track, fxIndex, results, stride, containerBase)
+    local retval, fx_name = reaper.TrackFX_GetFXName(track, fxIndex, "")
+    if retval and containsIgnoreCase(fx_name, "post-fader") then
+        if containsIgnoreCase(fx_name, "end") or
+           containsIgnoreCase(fx_name, "start") or
+           containsIgnoreCase(fx_name, "helper") then
+            table.insert(results, { idx = fxIndex, name = fx_name })
+        end
+    end
+    local ok, cnt = reaper.TrackFX_GetNamedConfigParm(track, fxIndex, "container_count")
+    if ok and cnt then
+        local childCount = tonumber(cnt)
+        if childCount and childCount > 0 then
+            local base
+            if containerBase then
+                base = containerBase
+            else
+                base = fxIndex + 1
+            end
+            for c = 0, childCount - 1 do
+                local childIdx = 0x2000000 + (c + 1) * stride + base
+                EnumerateFXRecursive(track, childIdx, results, stride, childIdx - 0x2000000)
             end
         end
     end
 end
 
-function UpdateTrackJSFXMute(track, trackIndex)
+function FindPostFaderFX(track)
+    local results = {}
     local fx_count = reaper.TrackFX_GetCount(track)
+    local stride = fx_count + 1
     for j = 0, fx_count - 1 do
-        local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
-        if retval and containsIgnoreCase(fx_name, "post-fader") then
-            if containsIgnoreCase(fx_name, "start") then
-                local param_index = 1 -- Assuming the mute parameter index is 1
-                local mute = lastMutes[trackIndex]
-                if not lastMutes[trackIndex] then
-                  mute = 0
-                end
-                reaper.TrackFX_SetParam(track, j, param_index, mute)
+        EnumerateFXRecursive(track, j, results, stride, nil)
+    end
+    return results
+end
+
+function UpdateTrackJSFXVolume(track, trackIndex)
+    local fxs = FindPostFaderFX(track)
+    for _, fx in ipairs(fxs) do
+        local param_index = 0
+        local volume = lastVolumes[trackIndex]
+        local trackVolume = lastTrackVolumes[trackIndex]
+        local trimVolume = lastTrimVolumes[trackIndex]
+        if not lastVolumes[trackIndex] then
+            volume = 1
+        end
+        if not lastTrackVolumes[trackIndex] then
+            trackVolume = 1
+        end
+        if not lastTrackVolumes[trackIndex] then
+            trimVolume = 1
+        end
+        local totalAmplitude = volume * trackVolume * trimVolume
+        local totalVolume = 20 * math.log(totalAmplitude, 10)
+        reaper.TrackFX_SetParam(track, fx.idx, param_index, totalVolume)
+    end
+end
+
+function UpdateTrackJSFXMute(track, trackIndex)
+    local fxs = FindPostFaderFX(track)
+    for _, fx in ipairs(fxs) do
+        if containsIgnoreCase(fx.name, "start") then
+            local param_index = 1
+            local mute = lastMutes[trackIndex]
+            if not lastMutes[trackIndex] then
+                mute = 0
             end
+            reaper.TrackFX_SetParam(track, fx.idx, param_index, mute)
         end
     end
 end
 
 function UpdateTrackJSFXSolo(track, trackIndex)
-    local fx_count = reaper.TrackFX_GetCount(track)
-    local solo_index = 2 -- Assuming the solo parameter index is 2
-    local solo_other_index = 3 -- Assuming the solo parameter index is 2
-    for j = 0, fx_count - 1 do
-        local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
-        if retval and containsIgnoreCase(fx_name, "post-fader") then
-            if containsIgnoreCase(fx_name, "start") then
-                local solo = lastSolos[trackIndex]
-                if not lastSolos[trackIndex] then
-                  solo = 0
-                end
-                reaper.TrackFX_SetParam(track, j, solo_index, solo)
-                reaper.TrackFX_SetParam(track, j, solo_other_index, 0)
+    local solo_index = 2
+    local solo_other_index = 3
+    local fxs = FindPostFaderFX(track)
+    for _, fx in ipairs(fxs) do
+        if containsIgnoreCase(fx.name, "start") then
+            local solo = lastSolos[trackIndex]
+            if not lastSolos[trackIndex] then
+                solo = 0
             end
+            reaper.TrackFX_SetParam(track, fx.idx, solo_index, solo)
+            reaper.TrackFX_SetParam(track, fx.idx, solo_other_index, 0)
         end
     end
     local solosAreActive = 0
@@ -251,43 +356,39 @@ function UpdateTrackJSFXSolo(track, trackIndex)
     end
     local track_count = reaper.CountTracks(0)
     for i = 0, track_count - 1 do
-        local track = reaper.GetTrack(0, i)
-        local fx_count = reaper.TrackFX_GetCount(track)
-        for j = 0, fx_count - 1 do
-            local retval, fx_name = reaper.TrackFX_GetFXName(track, j, "")
-        if retval and containsIgnoreCase(fx_name, "post-fader") then
-                if containsIgnoreCase(fx_name, "start") then
-                    if solosAreActive == 0 then
-                        reaper.TrackFX_SetParam(track, j, solo_other_index, 0)
-                    else
-                        local trackSolo = 1 - reaper.TrackFX_GetParam(track, j, solo_index)
-                        reaper.TrackFX_SetParam(track, j, solo_other_index, trackSolo)
-                    end
+        local trk = reaper.GetTrack(0, i)
+        local allFxs = FindPostFaderFX(trk)
+        for _, fx in ipairs(allFxs) do
+            if containsIgnoreCase(fx.name, "start") then
+                if solosAreActive == 0 then
+                    reaper.TrackFX_SetParam(trk, fx.idx, solo_other_index, 0)
+                else
+                    local trackSolo = 1 - reaper.TrackFX_GetParam(trk, fx.idx, solo_index)
+                    reaper.TrackFX_SetParam(trk, fx.idx, solo_other_index, trackSolo)
                 end
             end
         end
     end
 end
 
--- Main loop function, managing delay execution and calling update functions
 function MainLoop()
-    if reaper.GetPlayState() ~= 0 then -- If REAPER is playing
+    if not HandleGUIClick() then return end
+    UpdateGUI()
+    if reaper.GetPlayState() ~= 0 then
         ProcessTracksWithAutomation()
     else
         ProcessPositionChange()
     end
     UpdateChannel()
     UpdatePluginsIfNeeded()
-
-    -- Schedule the next update using deferred execution
     reaper.defer(MainLoop)
 end
 
--- Initial delay setup to kickstart the loop after the specified delay
 function DelayedStart()
     local startTime = reaper.time_precise()
     local function CheckDelay()
         if reaper.time_precise() - startTime >= volumeDelay then
+            InitGUI()
             MainLoop()
         else
             reaper.defer(CheckDelay)
@@ -296,4 +397,4 @@ function DelayedStart()
     reaper.defer(CheckDelay)
 end
 
-DelayedStart() -- Start the script
+DelayedStart()
