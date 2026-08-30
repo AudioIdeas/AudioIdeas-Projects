@@ -1,7 +1,8 @@
 desc: Post-fader-insert-end
-version: 1.10
+version: 1.11
 author: Vesa Laasanen
 changelog: 
+- 1.11: Document FX container usage
 - 1.10: Bugfix
 - 1.04: initial version
 about:
@@ -12,6 +13,15 @@ about:
    Usage Instructions:
      - Run post-fader-insert.lua script
      - Insert JS: post-fader-fx-start and JS: post-fader-fx-end plugins to a channel. Any plugin between these plugins will emulate post-fader insert. JS: post-fader-fx-start multiplies the signal volume by channel fader value and JS: post-fader-fx-end reverses the volume change.
+
+   FX Containers:
+     This plugin works inside FX containers, at any nesting depth. Container support
+     requires REAPER 7.06 or newer. Renaming the plugin in the FX chain is safe; the
+     script identifies it by its JSFX file, not by the name shown in the chain.
+
+     Keep post-fader-fx-start and post-fader-fx-end in the same serial signal path. If you
+     put them in separate parallel branches of a container, post-fader-fx-end will not undo
+     the gain applied by post-fader-fx-start and the level will be wrong.
 
    Dependencies:
      - None

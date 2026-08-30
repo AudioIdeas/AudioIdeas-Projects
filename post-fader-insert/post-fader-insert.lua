@@ -1,8 +1,12 @@
 --[[
 @description Post-fader-insert
-@version 1.22
+@version 1.23
 @author Vesa Laasanen
 @changelog
+   1.23:
+   Fix plugins inside nested containers not being found
+   Renaming a plugin no longer stops the script from finding it
+   Plugins added or removed inside a container are now picked up
    1.22:
    GUI toggle for mute/solo mode, persisted via ExtState
    Support FX containers (recursive)
@@ -26,6 +30,15 @@
      - Insert JS: post-fader-fx-start and JS: post-fader-fx-end plugins to a channel. Any plugin between these plugins will emulate post-fader insert. JS: post-fader-fx-start multiplies the signal volume by channel fader value and JS: post-fader-fx-end reverses the volume change.
      - Alternatively insert JS: post-fader-fx-helper to a channel. You can now modulate other plugins with post-fader volume parameter.
 
+   FX Containers:
+     The start/end pair and the helper work inside FX containers, at any nesting depth.
+     Keep post-fader-fx-start and post-fader-fx-end in the same serial signal path. If you
+     put them in separate parallel branches of a container, post-fader-fx-end will not undo
+     the gain applied by post-fader-fx-start and the level will be wrong.
+
+     Renaming the plugins in the FX chain is safe. The script identifies them by their JSFX
+     file, not by the name shown in the chain.
+
    Mute/Solo Mode:
      The script window has a toggle button for "Mute/Solo Mode". When off (default), REAPER
      handles mute/solo natively - use this for folder tracks and Dolby Atmos Composer. When on,
@@ -33,7 +46,8 @@
      The setting is saved globally and persists across REAPER restarts.
 
    Dependencies:
-     - None
+     - None. REAPER 7.06 or newer is required for FX container support; on older versions
+       the plugins still work at the top level of a track FX chain.
 --]]
 
 
@@ -118,7 +132,7 @@ end
 function ResetMuteSolo(track, trackIndex)
     local fxs = FindPostFaderFX(track)
     for _, fx in ipairs(fxs) do
-        if containsIgnoreCase(fx.name, "start") then
+        if fx.role == "start" then
             reaper.TrackFX_SetParam(track, fx.idx, 1, 0)
             reaper.TrackFX_SetParam(track, fx.idx, 2, 0)
             reaper.TrackFX_SetParam(track, fx.idx, 3, 0)
@@ -237,10 +251,9 @@ function CheckAndHandlePluginChanges()
     local track_count = reaper.CountTracks(0)
     for i = 0, track_count - 1 do
         local track = reaper.GetTrack(0, i)
-        local fx_count = reaper.TrackFX_GetCount(track)
-        if not lastFXCounts[i] or lastFXCounts[i] ~= fx_count then
-            lastFXCounts[i] = fx_count
-            local fxs = FindPostFaderFX(track)
+        local fxs = FindPostFaderFX(track)
+        if not lastFXCounts[i] or lastFXCounts[i] ~= #fxs then
+            lastFXCounts[i] = #fxs
             if #fxs > 0 then
                 UpdateTrackJSFXVolume(track, i)
                 if GetEnableMuteSolo() then
@@ -254,45 +267,37 @@ function CheckAndHandlePluginChanges()
     end
 end
 
-function containsIgnoreCase(fullString, substring)
-    local lowerFullString = fullString:lower()
-    local lowerSubstring = substring:lower()
-    return lowerFullString:find(lowerSubstring, 1, true) ~= nil
+local ROLE_BY_IDENT = {
+    ["post-fader-fx-start.jsfx"]  = "start",
+    ["post-fader-fx-end.jsfx"]    = "end",
+    ["post-fader-fx-helper.jsfx"] = "helper",
+}
+
+function PostFaderRole(track, fxIndex)
+    local ok, ident = reaper.TrackFX_GetNamedConfigParm(track, fxIndex, "fx_ident")
+    if not ok then return nil end
+    return ROLE_BY_IDENT[(ident:match("[^/\\]+$") or ident):lower()]
 end
 
-function EnumerateFXRecursive(track, fxIndex, results, stride, containerBase)
-    local retval, fx_name = reaper.TrackFX_GetFXName(track, fxIndex, "")
-    if retval and containsIgnoreCase(fx_name, "post-fader") then
-        if containsIgnoreCase(fx_name, "end") or
-           containsIgnoreCase(fx_name, "start") or
-           containsIgnoreCase(fx_name, "helper") then
-            table.insert(results, { idx = fxIndex, name = fx_name })
-        end
+function EnumerateFXRecursive(track, fxIndex, results)
+    local role = PostFaderRole(track, fxIndex)
+    if role then
+        table.insert(results, { idx = fxIndex, role = role })
+        return
     end
     local ok, cnt = reaper.TrackFX_GetNamedConfigParm(track, fxIndex, "container_count")
-    if ok and cnt then
-        local childCount = tonumber(cnt)
-        if childCount and childCount > 0 then
-            local base
-            if containerBase then
-                base = containerBase
-            else
-                base = fxIndex + 1
-            end
-            for c = 0, childCount - 1 do
-                local childIdx = 0x2000000 + (c + 1) * stride + base
-                EnumerateFXRecursive(track, childIdx, results, stride, childIdx - 0x2000000)
-            end
+    for c = 0, (ok and tonumber(cnt) or 0) - 1 do
+        local ok2, childIdx = reaper.TrackFX_GetNamedConfigParm(track, fxIndex, "container_item." .. c)
+        if ok2 then
+            EnumerateFXRecursive(track, tonumber(childIdx), results)
         end
     end
 end
 
 function FindPostFaderFX(track)
     local results = {}
-    local fx_count = reaper.TrackFX_GetCount(track)
-    local stride = fx_count + 1
-    for j = 0, fx_count - 1 do
-        EnumerateFXRecursive(track, j, results, stride, nil)
+    for j = 0, reaper.TrackFX_GetCount(track) - 1 do
+        EnumerateFXRecursive(track, j, results)
     end
     return results
 end
@@ -322,7 +327,7 @@ end
 function UpdateTrackJSFXMute(track, trackIndex)
     local fxs = FindPostFaderFX(track)
     for _, fx in ipairs(fxs) do
-        if containsIgnoreCase(fx.name, "start") then
+        if fx.role == "start" then
             local param_index = 1
             local mute = lastMutes[trackIndex]
             if not lastMutes[trackIndex] then
@@ -338,7 +343,7 @@ function UpdateTrackJSFXSolo(track, trackIndex)
     local solo_other_index = 3
     local fxs = FindPostFaderFX(track)
     for _, fx in ipairs(fxs) do
-        if containsIgnoreCase(fx.name, "start") then
+        if fx.role == "start" then
             local solo = lastSolos[trackIndex]
             if not lastSolos[trackIndex] then
                 solo = 0
@@ -356,7 +361,7 @@ function UpdateTrackJSFXSolo(track, trackIndex)
         local trk = reaper.GetTrack(0, i)
         local allFxs = FindPostFaderFX(trk)
         for _, fx in ipairs(allFxs) do
-            if containsIgnoreCase(fx.name, "start") then
+            if fx.role == "start" then
                 if solosAreActive == 0 then
                     reaper.TrackFX_SetParam(trk, fx.idx, solo_other_index, 0)
                 else
